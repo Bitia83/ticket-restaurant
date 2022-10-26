@@ -1,5 +1,9 @@
 const respuesta = document.querySelector("#respuesta");
 console.log(respuesta.rows)
+const templateBody = document.querySelector("#template-body")
+const footer = document.querySelector("#footer")
+const templateFooter = document.querySelector('#template-footer')
+
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchData();
@@ -13,32 +17,33 @@ const fetchData = async () => {
     console.log(data);
     //una vez que tenemos la data la pintamos
     pintarDatos(data);
-    pintarfooter(respuesta)
+    
   } catch (error) {}
 };
 
 const pintarDatos = (data) => {
+  const fragment = document.createDocumentFragment()
+  respuesta.textContent = "";
  
   data.forEach((item) => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
-    <td>${item.quantity}</td>
-    <td>${item.product}</td>
-    <td>${item.unitPrice}</td>
-    <td>${item.unitPrice * item.quantity}</td>
-`;
-
-    respuesta.appendChild(row);
+    const clone = templateBody.content.cloneNode(true);
+     clone.querySelector("#uds").textContent = item.quantity;
+     clone.querySelector("#product").textContent = item.product;
+     clone.querySelector("#price").textContent = item.unitPrice;
+     clone.querySelector("#importe").textContent = item.unitPrice * item.quantity;
+    
+    fragment.appendChild(clone);
   });
+  respuesta.appendChild(fragment);
+  pintarfooter(data);
 };
 
-const pintarfooter = (respuesta) => {
-  let total = 0;
-for (let i = 0; i < respuesta.rows.length; i++) {
-     rowValue = respuesta.rows[i].cells[3].innerHTML;
-    total += parseFloat(rowValue); 
-  }
+const pintarfooter = (data) => {
+console.log("pintar footer")
+  footer.textContent = "";
+  const total = data.reduce((acc, current) => acc + current.unitPrice * current.quantity, 0);
   console.log(total)
-  const tdTotal = document.getElementById("tdTotal");
-  tdTotal.textContent = total;
+  const clone = templateFooter.content.cloneNode(true)
+  clone.querySelector('#tdTotal').textContent = total
+  footer.appendChild(clone)
 }

@@ -25,16 +25,26 @@ crossorigin="anonymous">
         <th>Importe</th>
       </tr>
       <tbody id="respuesta">
-       
+        <template id="template-body">
+          <tr>
+            <td id="uds"></td>
+            <td id="product"></td>
+            <td id="price"></td>
+            <td id="importe"></td>
+          </tr>
+        </template>
       </tbody>
       <tfoot id="footer">
+        <template id="template-footer">
         <tr >
           <td colspan="3">Total</td>
           <td id="tdTotal"></td>
         </tr>
+      </template>
       </tfoot>
     </thead>
    </table>
+   
   </div>
   </div>
   <script src="app.js"></script> 
